@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const ytdl = require('ytdl-core');
-const search = require('./yt-search/index.js');
+const search = require('youtube-search');
 var lyrics = require('./lyr/index.js');
 module.exports = function (client, options) {
 	// Get all options.
