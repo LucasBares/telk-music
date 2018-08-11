@@ -1,14 +1,14 @@
 const Discord = require("discord.js");
 const ytdl = require('ytdl-core');
-const search = require('youtube-search');
+const search = require('./yt-search/index.js');
 var lyrics = require('./lyr/index.js');
 module.exports = function (client, options) {
 	// Get all options.
 	let PREFIX = (options && options.prefix) || '!';
 	let GLOBAL = (options && options.global) || false;
 	let MAX_QUEUE_SIZE = (options && options.maxQueueSize) || 100;
-	let DEFAULT_VOLUME = (options && options.volume) || 50;
-	let ALLOW_ALL_SKIP = (options && options.anyoneCanSkip) || false;
+	let ALLOW_ALL_SKIP = (options && options.anyoneCanSkip) || true;
+	let TIMELIMIT = (options && options.timelimit) || true;
 	let CLEAR_MSG = (options && options.deletemsg) || false;
 	let SEARCHMSG = (options && options.searchmsg) || ':mag_right: **Searching**  \`{song}\` . . .';
 	let ADDEDMSG = (options && options.addedmsg) || ':musical_note: Added **{song}** to the queue!';
@@ -30,56 +30,54 @@ module.exports = function (client, options) {
 			if(msg.channel.type === 'text') {
 			if (!somestuff[msg.guild.id]) somestuff[msg.guild.id] = {
 			  loop: 0,
+				volume: 50,
 			}
 			}
 			switch (command) {
 				case 'play':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return play(msg, suffix);
 				case 'p':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return play(msg, suffix);
 				case 'search':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return play(msg, suffix);
 				case 'skip':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return skip(msg, suffix);
 				case 'queue':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return queue(msg, suffix);
 				case 'pause':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return pause(msg, suffix);
 				case 'resume':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return resume(msg, suffix);
 				case 'volume':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return volume(msg, suffix);
 				case 'leave':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return leave(msg, suffix);
 				case 'stop':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return clearqueue(msg, suffix);
 				case 'clearqueue':
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return clearqueue(msg, suffix);
 				case "loop":
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 					return loop(msg, suffix);
 				case "nowplaying":
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 				return np(msg)
 				case "np":
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 				return np(msg)
-				case "about":
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
-				return about(msg)
 				case "lyrics":
-				if(msg.channel.type === 'dm') return msg.channel.send(':x: Sorry, \`' + command + ' \` command can only be used in a guild/server')
+				if(msg.channel.type === 'dm') return msg.channel.send(':x: Perdon, \`' + command + ' \` solo puede ser utilizado en un servidor!')
 				return lyric(msg)
 			}
 			if (CLEAR_MSG) {
@@ -89,14 +87,7 @@ module.exports = function (client, options) {
 	});
 
 	function isAdmin(member) {
-		return member.hasPermission("ADMINISTRATOR");
-	}
-
-	function about(msg) {
-		var aboutembed = new Discord.RichEmbed()
-		.setTitle("telk-music")
-		.setDescription("• Description: a Simple Discord.js Music Module\n• Author: telk-music is made by **Telk#2726**\n• Usage: to simplyfy people making music bots with discord.js\n\n\n**Extra Info**\n• telk-music supports changeale messages, some options, queue system and others!\n• My Origanal goal was just a simple discord.js music module")
-		msg.channel.send(aboutembed)
+		return member.roles.find("name", "DJ");
 	}
 
 	function canSkip(member, queue) {
@@ -105,7 +96,6 @@ module.exports = function (client, options) {
 		else if (isAdmin(member)) return true;
 		else return false;
 	}
-
 
 	function getQueue(server) {
 		if (GLOBAL) server = '_';
@@ -116,19 +106,19 @@ module.exports = function (client, options) {
 
 	function np(msg) {
 		const queue = getQueue(msg.guild.id);
-		if (!queue[0]) return msg.channel.send(":x: No music being played.")
+		if (!queue[0]) return msg.channel.send(":x: No hay musica sonando.")
 		var npmsg = PLAYMSG.replace("{song}", `${queue[0].title}`)
 		msg.channel.send(npmsg)
 	}
 
 	function play(msg, suffix) {
-		if (msg.member.voiceChannel === undefined) return msg.channel.send(':x: You\'re not in a voice channel.');
+		if (msg.member.voiceChannel === undefined) return msg.channel.send(':x: No estás en ningun canal de voz.');
 
-		if (!suffix) return msg.channel.send(':x: Please provide a link/title of a song for me to play');
+		if (!suffix) return msg.channel.send(':x: Dame algo que reproducir, pendejo');
 
 		const queue = getQueue(msg.guild.id);
 		if (queue.length >= MAX_QUEUE_SIZE) {
-			return msg.channel.send('Maximum queue size reached!');
+			return msg.channel.send('No puedo agregar nada más a la queue!');
 		}
 var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 		msg.channel.send(searchmsg).then(response => {
@@ -139,17 +129,32 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 			}
 			search(searchstring, opts, (err, results) => {
 					if(err) {
-						response.edit(":x: Invalid Song title/link")
+						response.edit(":x: Link de canción invalida")
 					console.log(err);
 					return
 				} else {
+					if (TIMELIMIT) {
+						ytdl.getInfo(results[0].link, function(err, info) {
+					if (info.length_seconds >= 14400) return response.edit(":x: Solo puedo reproducir canciones que no exedan las 4 horas")
 					var addedmsg = ADDEDMSG.replace("{song}", `${results[0].title}`)
 					results[0].requester = msg.author.id;
-					results[0].realtitle = suffix;
+					var lolz = suffix.split(" ")
+					results[0].requesttitle = lolz[0]
 					response.edit(addedmsg).then(() => {
 						queue.push(results[0])
 						if (queue.length === 1) executeQueue(msg, queue);
 					})
+})
+} else {
+	var addedmsg = ADDEDMSG.replace("{song}", `${results[0].title}`)
+	results[0].requester = msg.author.id;
+	var lolz = suffix.split(" ")			
+	results[0].requesttitle = lolz[0]
+	response.edit(addedmsg).then(() => {
+		queue.push(results[0])
+		if (queue.length === 1) executeQueue(msg, queue);
+	})
+}
 				}
 				})
 	})
@@ -159,7 +164,7 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 
 	function skip(msg, suffix) {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-		if (voiceConnection === null) return msg.channel.send(':x: No music being played.');
+		if (voiceConnection === null) return msg.channel.send(':x: No hay musica sonando.');
 
 		const queue = getQueue(msg.guild.id);
 
@@ -167,7 +172,7 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 			response.delete(5000);
 		});
 
-		msg.channel.send('Skipped **' + queue[0].title + '**!');
+		msg.channel.send('Pasando **' + queue[0].title + '**!');
 		queue.splice(0, 0);
 
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -178,13 +183,19 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 
 	function lyric(msg) {
 		const queue = getQueue(msg.guild.id);
-		if (!queue[0]) return msg.channel.send(":x: No music being played.")
-		lyrics.fetch(queue[0].channelTitle, queue[0].realtitle, function(err, lyrics) {
-			if(lyrics === "Sorry, We don't have lyrics for this song yet.") return msg.channel.send(":x: Sorry I couldn't find that song's lyrics")
+		if (!queue[0]) return msg.channel.send(":x: No hay musica reproduciendose!")
+		var author = queue[0].channelTitle.replace("VEVO", "")
+		lyrics.getLyrics(author, queue[0].title, function(err, title, lyrics) {
+			var songtitle = queue[0].requesttitle
+			if (title.indexOf(songtitle) >= 0) {
+			if(lyrics === "Lyrics could not be found.") return msg.channel.send(":x: No pude encontrar nada con ese nombre")
 		    var lyricembed = new Discord.RichEmbed()
-				.setTitle(queue[0].title + " lyrics")
+				.setTitle(title + " lyrics")
 				.setDescription(lyrics)
 				msg.channel.send(lyricembed)
+			} else {
+				msg.channel.send(":x: No pude encontrar nada con ese nombre")
+			}
 		});
 	}
 
@@ -195,11 +206,11 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 		)).join('\n');
 
 
-		let queueStatus = ':stop_button: Stopped';
+		let queueStatus = ':stop_button: No reproduciendo nada';
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
 		if (voiceConnection !== null) {
 			const dispatcher = voiceConnection.player.dispatcher;
-			queueStatus = dispatcher.paused ? ':pause_button: Paused' : 'Playing \\🎶';
+			queueStatus = dispatcher.paused ? ':pause_button: Pausada' : 'Reproduciendo \\🎶';
 		}
 var queueembed = new Discord.RichEmbed()
 .setTitle("\\🎵 **Queue** \\🎵 - " + queueStatus)
@@ -209,10 +220,10 @@ var queueembed = new Discord.RichEmbed()
 
 	function pause(msg, suffix) {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-		if (voiceConnection === null) return msg.channel.send(':x: No music being played.');
+		if (voiceConnection === null) return msg.channel.send(':x: No hay musica reproduciendose!');
 
 		if (!isAdmin(msg.member))
-			return msg.channel.send(':x: Sorry you do not have the permission to use this command');
+			return msg.channel.send(':x: No tienes el rol de **Dj**');
 
 		msg.channel.send('Playback paused.');
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -223,37 +234,37 @@ var queueembed = new Discord.RichEmbed()
 	function leave(msg, suffix) {
 		if (isAdmin(msg.member)) {
 			const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			if (voiceConnection === null) return msg.channel.send(':x: I\'m not in any channel!.');
+			if (voiceConnection === null) return msg.channel.send(':x: No estoy en ningun canal.');
 			somestuff[msg.guild.id].loop=0;
 			const queue = getQueue(msg.guild.id);
 			queue.splice(0, queue.length);
 
 			voiceConnection.disconnect();
 		} else {
-			msg.channel.send(':x: You don\'t have permission to use this command!');
+			msg.channel.send(':x: No tienes el rol de **Dj**');
 		}
 	}
 
 	function clearqueue(msg, suffix) {
 		if (isAdmin(msg.member)) {
 			const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-			if (voiceConnection === null) return msg.channel.send(':x: I\'m not in any channel!.');
+			if (voiceConnection === null) return msg.channel.send(':x: No estoy en ningun canal.');
 			somestuff[msg.guild.id].loop=0;
 			const queue = getQueue(msg.guild.id);
 			queue.splice(0, queue.length);
 
 			voiceConnection.disconnect();
 		} else {
-			msg.channel.send(':x: You don\'t have permission to use this command!');
+			msg.channel.send(':x: No tienes el rol de **Dj**');
 		}
 	}
 
 	function resume(msg, suffix) {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-		if (voiceConnection === null) return msg.channel.send(':x: No music being played.');
+		if (voiceConnection === null) return msg.channel.send(':x: No hay musica sonando!');
 
 		if (!isAdmin(msg.member))
-			return msg.channel.send(':x: You don\'t have permission to use that command!');
+			return msg.channel.send(':x: No tienes el rol de **Dj**');
 
 		msg.channel.send('Playback resumed.');
 		const dispatcher = voiceConnection.player.dispatcher;
@@ -262,18 +273,18 @@ var queueembed = new Discord.RichEmbed()
 
 	function volume(msg, suffix) {
 		const voiceConnection = client.voiceConnections.find(val => val.channel.guild.id == msg.guild.id);
-		if (voiceConnection === null) return msg.channel.send(':x: No music being played.');
+		if (voiceConnection === null) return msg.channel.send(':x: No hay musica sonando.');
 
 		if (!isAdmin(msg.member))
-			return msg.channel.send(':x: You don\'t have permission to use that command!');
+			return msg.channel.send(':x: No tienes el rol de **Dj**');
 
 		const dispatcher = voiceConnection.player.dispatcher;
 
-		if (suffix > 200 || suffix < 0) return msg.channel.send('The number you entered was too big, max is 200').then((response) => {
+		if (suffix > 200 || suffix < 0) return msg.channel.send('El numero que ingresaste es muy alto! *El maximo es de 200*').then((response) => {
 			response.delete(5000);
 		});
-
-		msg.channel.send("Volume set to " + suffix);
+somestuff[msg.guild.id].volume=suffix
+		msg.channel.send("Volumen al" + suffix + "%");
 		dispatcher.setVolume((suffix/100));
 	}
 
@@ -289,11 +300,11 @@ var queueembed = new Discord.RichEmbed()
 		} else {
 			somestuff[msg.guild.id].loop++;
 			if (somestuff[msg.guild.id].loop === 1) {
-				var loopmsg = LOOPMSG.replace("{toggle}", `on`)
+				var loopmsg = LOOPMSG.replace("{toggle}", ` Prendido!`)
 				msg.channel.send(loopmsg)
 			}
 			if (somestuff[msg.guild.id].loop >= 2) {
-				var loopmsg = LOOPMSG.replace("{toggle}", `off`)
+				var loopmsg = LOOPMSG.replace("{toggle}", ` Apagado!`)
 				somestuff[msg.guild.id].loop=0;
 				msg.channel.send(loopmsg)
 			}
@@ -326,7 +337,7 @@ var queueembed = new Discord.RichEmbed()
 			const video = queue[0];
 var playmsg = PLAYMSG.replace("{song}", `${video.title}`)
 			msg.channel.send(playmsg).then(() => {
-				let dispatcher = connection.playStream(ytdl(video.link, {filter: 'audioonly'}), {seek: 0, volume: (DEFAULT_VOLUME/100)});
+				let dispatcher = connection.playStream(ytdl(video.link, {filter: 'audioonly'}), {seek: 0, volume: (somestuff[msg.guild.id].volume/100)});
 				connection.on('error', (error) => {
 					if (somestuff[msg.guild.id].loop === 1) {queue.push(video)}
 					console.log(error);
@@ -348,7 +359,7 @@ var playmsg = PLAYMSG.replace("{song}", `${video.title}`)
 							queue.shift();
 							executeQueue(msg, queue);
 						}
-					}, 1000);
+					});
 				});
 			}).catch((error) => {
 				console.log(error);
