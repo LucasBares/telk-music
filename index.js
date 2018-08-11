@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const ytdl = require('ytdl-core');
-const search = require('youtube-search');
+const search = require('./yt-search/index.js');
 var lyrics = require('./lyr/index.js');
 module.exports = function (client, options) {
 	// Get all options.
@@ -135,7 +135,7 @@ var searchmsg = SEARCHMSG.replace("{song}", `${suffix}`)
 				} else {
 					if (TIMELIMIT) {
 						ytdl.getInfo(results[0].link, function(err, info) {
-					if (info.length_seconds >= 14400) return response.edit(":x: Solo puedo reproducir canciones que no exedan las 4 horas")
+					if (info.length_seconds >= 3600) return response.edit(":x: Solo puedo reproducir canciones que no exeda 1 hora")
 					var addedmsg = ADDEDMSG.replace("{song}", `${results[0].title}`)
 					results[0].requester = msg.author.id;
 					var lolz = suffix.split(" ")
