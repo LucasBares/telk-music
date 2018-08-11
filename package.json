@@ -1,15 +1,22 @@
 {
-  "name": "asdasd",
-  "version": "1.0.0",
-  "description": "",
+  "name": "telk-music",
+  "version": "1.2.2",
+  "description": "a Simple discord.js music module",
   "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "telk-music": "^2.0.0"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/telkenes/telk-music/"
+  },
+  "keywords": [
+    "discord.js",
+    "music"
+  ],
+  "author": "Telk",
+  "license": "ISC"
 }
